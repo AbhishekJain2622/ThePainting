@@ -186,46 +186,54 @@ export default function Home() {
         </div>
 
         {/* Navigation */}
-        <div className="relative z-10">
-          <div className="container mx-auto flex items-center justify-between py-6">
-            <div className="flex items-center">
-              <div className="h-15 w-25 p-2">
-                <Image
-                  src="/logo.png"
-                  alt="The Painting Company Logo"
-                  width={48}
-                  height={48}
-                  className="object-contain"
-                />
-              </div>
-              <span className="ml-2 text-white font-semibold text-xl">The Painting Company</span>
-            </div>
-            <nav className="hidden md:flex space-x-8">
-              <Link href="#about" className="text-white hover:text-teal-400 transition-colors">
-                About
-              </Link>
-              <Link href="#services" className="text-white hover:text-teal-400 transition-colors">
-                Services
-              </Link>
-              <Link href="#gallery" className="text-white hover:text-teal-400 transition-colors">
-                Gallery
-              </Link>
-              <Link href="#testimonials" className="text-white hover:text-teal-400 transition-colors">
-                Testimonials
-              </Link>
-              <Link href="#contact" className="text-white hover:text-teal-400 transition-colors">
-                Contact
-              </Link>
-            </nav>
-            <Button
-              variant="outline"
-              className="md:hidden text-white border-white hover:bg-teal-500 hover:text-white"
-              onClick={toggleMobileMenu}
-            >
-              Menu
-            </Button>
-          </div>
+        <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+  <div className="container mx-auto flex items-center justify-between py-4">
+    <div className="flex items-center">
+      <div className="flex items-center p-2">
+        <div className="h-[60px] w-[60px]">
+          <Image
+            src="/logo.png"
+            alt="The Painting Company Logo"
+            width={60}
+            height={60}
+            className="object-contain"
+          />
         </div>
+        <span className="ml-3 text-[#00878C] font-semibold text-xl">
+          The Painting Company
+        </span>
+      </div>
+    </div>
+    <nav className="hidden md:flex space-x-8">
+      <Link href="#about" className="text-[#00878C] hover:text-[#006e73] transition-colors">
+        About
+      </Link>
+      <Link href="#services" className="text-[#00878C] hover:text-[#006e73] transition-colors">
+        Services
+      </Link>
+      <Link href="#gallery" className="text-[#00878C] hover:text-[#006e73] transition-colors">
+        Gallery
+      </Link>
+      <Link href="#testimonials" className="text-[#00878C] hover:text-[#006e73] transition-colors">
+        Testimonials
+      </Link>
+      <Link href="#contact" className="text-[#00878C] hover:text-[#006e73] transition-colors">
+        Contact
+      </Link>
+    </nav>
+    <Button
+      variant="outline"
+      className="md:hidden text-[#00878C] border-[#00878C] hover:bg-[#00878C] hover:text-white"
+      onClick={toggleMobileMenu}
+    >
+      Menu
+    </Button>
+  </div>
+</div>
+
+
+
+
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
