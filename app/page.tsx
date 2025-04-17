@@ -2,6 +2,8 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { Menu } from "lucide-react";
+
 import {
   ChevronDown,
   ChevronUp,
@@ -199,9 +201,9 @@ export default function Home() {
             className="object-contain"
           />
         </div>
-        <span className="ml-3 text-[#00878C] font-semibold text-xl">
+        {/* <span className="ml-3 text-[#00878C] font-semibold text-xl">
           The Painting Company
-        </span>
+        </span> */}
       </div>
     </div>
     <nav className="hidden md:flex space-x-8">
@@ -222,62 +224,72 @@ export default function Home() {
       </Link>
     </nav>
     <Button
-      variant="outline"
-      className="md:hidden text-[#00878C] border-[#00878C] hover:bg-[#00878C] hover:text-white"
-      onClick={toggleMobileMenu}
-    >
-      Menu
-    </Button>
+  variant="outline"
+  className="md:hidden text-[#00878C] hover:text-white p-2"
+  onClick={toggleMobileMenu}
+>
+  <Menu className="w-5 h-5" />
+</Button>
+
   </div>
 </div>
+{mobileMenuOpen && (
+  <div
+    style={{
+      position: 'absolute',
+      top: '5rem',
+      right: '1rem',
+      zIndex: 50,
+      backgroundColor: 'white',
+      border: '1px solid #e5e7eb', // Tailwind's gray-200
+      borderRadius: '0.5rem',
+      boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)',
+      padding: '1rem',
+      width: '13rem',
+      animation: 'fadeIn 0.3s ease-out',
+    }}
+  >
+    {/* Close Button */}
+    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem' }}>
+      <button
+        onClick={() => setMobileMenuOpen(false)}
+        style={{
+          color: '#00878C',
+          fontSize: '1.5rem',
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          background: 'none',
+          border: 'none',
+        }}
+      >
+        ×
+      </button>
+    </div>
 
+    {/* Menu Links */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      {['about', 'services', 'gallery', 'testimonials', 'contact'].map((section) => (
+        <Link
+          key={section}
+          href={`#${section}`}
+          onClick={() => setMobileMenuOpen(false)}
+          style={{
+            color: '#00878C',
+            textDecoration: 'none',
+            fontWeight: '500',
+            transition: 'color 0.2s ease',
+          }}
+          onMouseEnter={(e) => (e.target.style.color = '#006e73')}
+          onMouseLeave={(e) => (e.target.style.color = '#00878C')}
+        >
+          {section.charAt(0).toUpperCase() + section.slice(1)}
+        </Link>
+      ))}
+    </div>
+  </div>
+)}
 
-
-
-
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden absolute top-20 right-4 z-50 bg-gray-800 rounded-lg shadow-lg p-4 w-48">
-            <div className="flex flex-col space-y-4">
-              <Link
-                href="#about"
-                className="text-white hover:text-teal-400 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                About
-              </Link>
-              <Link
-                href="#services"
-                className="text-white hover:text-teal-400 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Services
-              </Link>
-              <Link
-                href="#gallery"
-                className="text-white hover:text-teal-400 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Gallery
-              </Link>
-              <Link
-                href="#testimonials"
-                className="text-white hover:text-teal-400 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Testimonials
-              </Link>
-              <Link
-                href="#contact"
-                className="text-white hover:text-teal-400 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Contact
-              </Link>
-            </div>
-          </div>
-        )}
-
+ 
         {/* Hero Content */}
         <div className="relative z-10 flex h-[calc(100vh-80px)] items-center justify-center">
           <div className="text-center px-6">
@@ -301,13 +313,14 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Scroll Down Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-          <Link href="#about" className="text-white flex flex-col items-center">
-            <span className="text-sm mb-2">Scroll Down</span>
-            <ChevronDown className="h-6 w-6" />
-          </Link>
-        </div>
+        {/* Scroll Down Indicator
+        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
+  <Link href="#about" className="text-[#00878C] flex flex-col items-center">
+    <span className="text-sm mb-1 font-medium">Scroll Down</span>
+    <ChevronDown className="h-6 w-6" />
+  </Link>
+</div> */}
+
       </header>
 
       {/* About Section */}
@@ -504,8 +517,6 @@ export default function Home() {
         </div>
       </div>
     </section>
-  );
-}
 
       {/* Testimonials Section with Carousel */}
       <section id="testimonials" className="py-20 bg-teal-50">
