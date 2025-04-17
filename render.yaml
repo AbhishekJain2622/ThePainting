@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: my-v0-project
+    env: node
+    branch: Development_branch  # Change this if your branch name is different
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    rootDir: .
+    plan: free
+    autoDeploy: true
