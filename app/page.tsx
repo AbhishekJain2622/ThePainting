@@ -29,9 +29,9 @@ const galleryImages = [
   "/p7.jpg",
   "/p8.jpg",
   "/p9.jpg",
- "/p10.jpg",
-"/p11.jpg",
-"/p12.jpg",
+  "/p10.jpg",
+  "/p11.jpg",
+  "/p12.jpg",
 ];
 
 const testimonials = [
@@ -43,8 +43,6 @@ const testimonials = [
     content:
       "Professional from start to finish. They transformed our villa with clean, high-quality work. Highly recommended.",
   },
-  
-
   {
     id: 2,
     name: "Sarah L.",
@@ -120,13 +118,21 @@ const testimonials = [
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showScrollTop, setShowScrollTop] = useState(false)
+  const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
 
+  // Toggle mobile menu
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
   }
 
-  const [showScrollTop, setShowScrollTop] = useState(false)
+  // Close mobile menu when clicking a link
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false)
+  }
 
+  // Scroll to top functionality
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 500) {
@@ -147,10 +153,7 @@ export default function Home() {
     })
   }
 
-  // Testimonial carousel state
-  const [currentTestimonial, setCurrentTestimonial] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
-
+  // Testimonial carousel functionality
   const nextTestimonial = useCallback(() => {
     setCurrentTestimonial((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))
   }, [])
@@ -174,8 +177,8 @@ export default function Home() {
   }, [isPaused, nextTestimonial])
 
   return (
-    <div className="flex min-h-screen flex-col">
-      {/* Hero Section with Navigation */}
+    <div className="flex min-h-screen flex-col w-full overflow-x-hidden">
+      {/* Hero Section */}
       <header className="relative h-screen w-full">
         <div className="absolute inset-0">
           <Image
@@ -188,173 +191,149 @@ export default function Home() {
         </div>
 
         {/* Navigation */}
-        <div className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
-  <div className="container mx-auto flex items-center justify-between py-4">
-    <div className="flex items-center">
-      <div className="flex items-center p-2">
-        <div className="h-[60px] w-[60px]">
-          <Image
-            src="/logo.png"
-            alt="The Painting Company Logo"
-            width={60}
-            height={60}
-            className="object-contain"
-          />
-        </div>
-        {/* <span className="ml-3 text-[#00878C] font-semibold text-xl">
-          The Painting Company
-        </span> */}
-      </div>
-    </div>
-    <nav className="hidden md:flex space-x-8">
-      <Link href="#about" className="text-[#00878C] hover:text-[#006e73] transition-colors">
-        About
-      </Link>
-      <Link href="#services" className="text-[#00878C] hover:text-[#006e73] transition-colors">
-        Services
-      </Link>
-      <Link href="#gallery" className="text-[#00878C] hover:text-[#006e73] transition-colors">
-        Gallery
-      </Link>
-      <Link href="#testimonials" className="text-[#00878C] hover:text-[#006e73] transition-colors">
-        Testimonials
-      </Link>
-      <Link href="#contact" className="text-[#00878C] hover:text-[#006e73] transition-colors">
-        Contact
-      </Link>
-    </nav>
-    <Button
-  variant="outline"
-  className="md:hidden text-[#00878C] hover:text-white p-2"
-  onClick={toggleMobileMenu}
->
-  <Menu className="w-5 h-5" />
-</Button>
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+          <div className="container mx-auto px-4 flex items-center justify-between py-4">
+            <div className="flex items-center">
+              <div className="flex items-center p-2">
+                <div className="h-[60px] w-[60px] relative">
+                  <Image
+                    src="/logo.png"
+                    alt="The Painting Company Logo"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex space-x-8">
+              <Link href="#about" className="text-[#00878C] hover:text-[#006e73] transition-colors">
+                About
+              </Link>
+              <Link href="#services" className="text-[#00878C] hover:text-[#006e73] transition-colors">
+                Services
+              </Link>
+              <Link href="#gallery" className="text-[#00878C] hover:text-[#006e73] transition-colors">
+                Gallery
+              </Link>
+              <Link href="#testimonials" className="text-[#00878C] hover:text-[#006e73] transition-colors">
+                Testimonials
+              </Link>
+              <Link href="#contact" className="text-[#00878C] hover:text-[#006e73] transition-colors">
+                Contact
+              </Link>
+            </div>
+            
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden text-[#00878C] hover:text-white p-2"
+              onClick={toggleMobileMenu}
+              aria-label="Toggle menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+          </div>
+        </nav>
 
-  </div>
-</div>
-{mobileMenuOpen && (
-  <div
-    style={{
-      position: 'absolute',
-      top: '5rem',
-      right: '1rem',
-      zIndex: 50,
-      backgroundColor: 'white',
-      border: '1px solid #e5e7eb', // Tailwind's gray-200
-      borderRadius: '0.5rem',
-      boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1)',
-      padding: '1rem',
-      width: '13rem',
-      animation: 'fadeIn 0.3s ease-out',
-    }}
-  >
-    {/* Close Button */}
-    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.5rem' }}>
-      <button
-        onClick={() => setMobileMenuOpen(false)}
-        style={{
-          color: '#00878C',
-          fontSize: '1.5rem',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          background: 'none',
-          border: 'none',
-        }}
-      >
-        ×
-      </button>
-    </div>
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="fixed top-20 right-4 z-50 bg-white rounded-lg shadow-xl w-56 py-2">
+            <Link 
+              href="#about" 
+              className="block px-4 py-2 text-[#00878C] hover:bg-teal-50"
+              onClick={closeMobileMenu}
+            >
+              About
+            </Link>
+            <Link 
+              href="#services" 
+              className="block px-4 py-2 text-[#00878C] hover:bg-teal-50"
+              onClick={closeMobileMenu}
+            >
+              Services
+            </Link>
+            <Link 
+              href="#gallery" 
+              className="block px-4 py-2 text-[#00878C] hover:bg-teal-50"
+              onClick={closeMobileMenu}
+            >
+              Gallery
+            </Link>
+            <Link 
+              href="#testimonials" 
+              className="block px-4 py-2 text-[#00878C] hover:bg-teal-50"
+              onClick={closeMobileMenu}
+            >
+              Testimonials
+            </Link>
+            <Link 
+              href="#contact" 
+              className="block px-4 py-2 text-[#00878C] hover:bg-teal-50"
+              onClick={closeMobileMenu}
+            >
+              Contact
+            </Link>
+          </div>
+        )}
 
-    {/* Menu Links */}
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      {['about', 'services', 'gallery', 'testimonials', 'contact'].map((section) => (
-        <Link
-          key={section}
-          href={`#${section}`}
-          onClick={() => setMobileMenuOpen(false)}
-          style={{
-            color: '#00878C',
-            textDecoration: 'none',
-            fontWeight: '500',
-            transition: 'color 0.2s ease',
-          }}
-          onMouseEnter={(e) => (e.target.style.color = '#006e73')}
-          onMouseLeave={(e) => (e.target.style.color = '#00878C')}
-        >
-          {section.charAt(0).toUpperCase() + section.slice(1)}
-        </Link>
-      ))}
-    </div>
-  </div>
-)}
-
- 
         {/* Hero Content */}
-        <div className="relative z-10 flex h-[calc(100vh-80px)] items-center justify-center">
-          <div className="text-center px-6">
+        <div className="relative z-10 flex h-full items-center justify-center px-4">
+          <div className="text-center max-w-4xl px-4">
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight">
               Precision. Protection. Perfection.
             </h1>
-            <p className="text-lg md:text-2xl text-white mb-6 max-w-2xl mx-auto">
+            <p className="text-lg md:text-2xl text-white mb-6">
               Welcome to <span className="text-teal-400 font-semibold">The Painting Company</span> — with over{" "}
               <strong>20 years</strong> of experience delivering high-quality painting services for residential,
               commercial, and industrial spaces.
             </p>
-            <p className="text-white text-base md:text-lg mb-8 max-w-2xl mx-auto">
+            <p className="text-white text-base md:text-lg mb-8">
               From stylish interiors to durable exterior finishes, our expert solutions are designed to last. Looking
               for reliable painters who deliver{" "}
               <span className="text-teal-400">on time, on budget, and beyond expectations?</span> You're in the right
               place.
             </p>
-            <Button className="bg-teal-500 hover:bg-teal-600 text-white px-10 py-4 text-lg rounded-full shadow-lg transition-all duration-300">
+            <Button className="bg-teal-500 hover:bg-teal-600 text-white px-8 py-4 text-lg rounded-full shadow-lg transition-all duration-300">
               Request a Free Quote
             </Button>
           </div>
         </div>
-
-        {/* Scroll Down Indicator
-        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 animate-bounce">
-  <Link href="#about" className="text-[#00878C] flex flex-col items-center">
-    <span className="text-sm mb-1 font-medium">Scroll Down</span>
-    <ChevronDown className="h-6 w-6" />
-  </Link>
-</div> */}
-
       </header>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-white">
+      <section id="about" className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="md:w-1/2">
-              <Image
-                src="/p2.jpg"
-                alt="Professional painters at work"
-                width={600}
-                height={400}
-                className="rounded-lg shadow-lg object-cover"
-              />
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="md:w-1/2 w-full">
+              <div className="relative h-80 md:h-96 w-full rounded-lg overflow-hidden shadow-lg">
+                <Image
+                  src="/p2.jpg"
+                  alt="Professional painters at work"
+                  fill
+                  className="object-cover"
+                />
+              </div>
             </div>
-            <div className="md:w-1/2">
+            <div className="md:w-1/2 w-full mt-8 md:mt-0">
               <h2 className="text-3xl font-bold mb-6 text-gray-800">About Us</h2>
-              <p className="text-gray-600 mb-4 text-justify">
+              <p className="text-gray-600 mb-4">
                 <strong>20 Years of Trusted Painting Excellence</strong>
                 <br />
                 Established two decades ago, The Painting Company has earned its name through commitment, consistency,
                 and quality. We started as a small team with a big vision — to offer seamless, professional painting
                 services that transform spaces and exceed client expectations.
               </p>
-              <p className="text-gray-600 mb-6 text-justify">
+              <p className="text-gray-600 mb-6">
                 Today, we proudly serve a wide range of clients, including homeowners, property managers, retail
                 businesses, and developers. Whether it's a fresh coat for your home or a large-scale exterior project,
                 we bring the same care and attention to every job.
               </p>
-              <p className="text-gray-600 mb-6 text-justify">
+              <p className="text-gray-600 mb-6">
                 Our team is trained, experienced, and equipped with the latest tools and materials — ensuring a smooth
                 process from start to finish.
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-teal-50 p-4 rounded-lg">
                   <h3 className="font-semibold text-teal-700 mb-2">Expert Team</h3>
                   <p className="text-gray-600 text-sm">Skilled professionals with years of experience</p>
@@ -378,20 +357,19 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 bg-gray-50">
+      <section id="services" className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4 text-gray-800">Our Services</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-justify">
+            <p className="text-gray-600 max-w-2xl mx-auto">
               At The Painting Company, we take pride in offering a full suite of painting and wall care solutions
               tailored to both residential and commercial spaces. Every service is executed with precision, using
-              top-quality materials, advanced techniques, and a team of trained professionals who treat your space like
-              their own.
+              top-quality materials, advanced techniques, and a team of trained professionals.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02]">
               <div className="h-48 relative">
                 <Image
                   src="/p3.jpg"
@@ -402,7 +380,7 @@ export default function Home() {
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">Interior Wall Painting</h3>
-                <p className="text-gray-600 mb-4 text-justify">
+                <p className="text-gray-600 mb-4">
                   We deliver smooth, professional interior finishes that enhance your space. From color consultation to
                   neat edging, we handle it all with precision and care.
                 </p>
@@ -421,7 +399,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105">
+            <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02]">
               <div className="h-48 relative">
                 <Image
                   src="/p4.jpg"
@@ -432,7 +410,7 @@ export default function Home() {
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">Exterior Wall Painting</h3>
-                <p className="text-gray-600 mb-4 text-justify">
+                <p className="text-gray-600 mb-4">
                   Designed to withstand harsh weather while keeping your property looking sharp. Ideal for villas,
                   buildings, warehouses, and more.
                 </p>
@@ -451,7 +429,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105">
+            <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02]">
               <div className="h-48 relative">
                 <Image
                   src="/p5.jpg"
@@ -462,7 +440,7 @@ export default function Home() {
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">Wall Maintenance & Artistry</h3>
-                <p className="text-gray-600 mb-4 text-justify">
+                <p className="text-gray-600 mb-4">
                   From routine repainting to expressive wall art, we keep your walls vibrant and inspiring — whether
                   you're a home, office, or creative space.
                 </p>
@@ -485,43 +463,41 @@ export default function Home() {
       </section>
 
       {/* Gallery Section */}
-     
-
-    <section id="gallery" className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4 text-gray-800">Our Gallery</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Browse through our portfolio of completed projects and see the quality of our work firsthand.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {galleryImages.map((src, index) => (
-            <div key={index} className="relative h-64 overflow-hidden rounded-lg group">
-              <Image
-                src={src}
-                alt={`Painting project ${index + 1}`}
-                fill
-                className="object-cover transition-transform group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
-                <span className="text-white font-medium">View</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center mt-10">
-          <Button className="bg-teal-500 hover:bg-teal-600 text-white">View More Photos</Button>
-        </div>
-      </div>
-    </section>
-
-      {/* Testimonials Section with Carousel */}
-      <section id="testimonials" className="py-20 bg-teal-50">
+      <section id="gallery" className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4 text-gray-800">Our Gallery</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Browse through our portfolio of completed projects and see the quality of our work firsthand.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            {galleryImages.map((src, index) => (
+              <div key={index} className="relative aspect-square overflow-hidden rounded-lg group">
+                <Image
+                  src={src}
+                  alt={`Painting project ${index + 1}`}
+                  fill
+                  className="object-cover transition-transform group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  <span className="text-white font-medium">View</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <Button className="bg-teal-500 hover:bg-teal-600 text-white">View More Photos</Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section id="testimonials" className="py-16 bg-teal-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4 text-gray-800">What Our Clients Say</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Don't just take our word for it. Here's what our satisfied clients have to say about our services.
@@ -542,7 +518,7 @@ export default function Home() {
               >
                 {testimonials.map((testimonial) => (
                   <div key={testimonial.id} className="w-full flex-shrink-0 px-4">
-                    <div className="bg-white p-8 rounded-lg shadow-md">
+                    <div className="bg-white p-6 md:p-8 rounded-lg shadow-md">
                       <div className="flex items-center mb-6">
                         <div className="h-16 w-16 rounded-full bg-gray-200 overflow-hidden relative">
                           <Image
@@ -553,17 +529,17 @@ export default function Home() {
                           />
                         </div>
                         <div className="ml-4">
-                          <h4 className="font-semibold text-xl text-gray-800">{testimonial.name}</h4>
+                          <h4 className="font-semibold text-lg md:text-xl text-gray-800">{testimonial.name}</h4>
                           <p className="text-gray-500">{testimonial.role}</p>
                         </div>
                       </div>
-                      <p className="text-gray-600 italic text-lg mb-6">"{testimonial.content}"</p>
+                      <p className="text-gray-600 italic text-base md:text-lg mb-6">"{testimonial.content}"</p>
                       <div className="flex text-teal-500">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <svg
                             key={star}
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
+                            className="h-5 w-5 md:h-6 md:w-6"
                             viewBox="0 0 20 20"
                             fill="currentColor"
                           >
@@ -580,28 +556,28 @@ export default function Home() {
             {/* Navigation Arrows */}
             <button
               onClick={prevTestimonial}
-              className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 bg-white text-teal-500 hover:text-teal-600 p-3 rounded-full shadow-lg z-10 focus:outline-none"
+              className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-2 md:-translate-x-4 bg-white text-teal-500 hover:text-teal-600 p-2 md:p-3 rounded-full shadow-lg z-10 focus:outline-none"
               aria-label="Previous testimonial"
             >
-              <ChevronLeft className="h-6 w-6" />
+              <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
             </button>
             <button
               onClick={nextTestimonial}
-              className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 bg-white text-teal-500 hover:text-teal-600 p-3 rounded-full shadow-lg z-10 focus:outline-none"
+              className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-2 md:translate-x-4 bg-white text-teal-500 hover:text-teal-600 p-2 md:p-3 rounded-full shadow-lg z-10 focus:outline-none"
               aria-label="Next testimonial"
             >
-              <ChevronRight className="h-6 w-6" />
+              <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
             </button>
 
             {/* Indicators */}
-            <div className="flex justify-center mt-8 space-x-2 flex-wrap">
-              {testimonials.map((_, index) => (
+            <div className="flex justify-center mt-8 space-x-2">
+              {testimonials.slice(0, 5).map((_, index) => (
                 <button
                   key={index}
                   onClick={() => goToTestimonial(index)}
-                  className={`h-3 w-3 rounded-full transition-colors ${
+                  className={`h-2 w-2 md:h-3 md:w-3 rounded-full transition-colors ${
                     currentTestimonial === index ? "bg-teal-500" : "bg-gray-300 hover:bg-teal-300"
-                  } mb-2`}
+                  }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
               ))}
@@ -611,9 +587,9 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-white">
+      <section id="contact" className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {/* Contact Info */}
             <div>
               <h2 className="text-3xl font-bold mb-6 text-gray-800">Get In Touch</h2>
@@ -663,7 +639,7 @@ export default function Home() {
 
             {/* Contact Form */}
             <div>
-              <form className="bg-gray-50 p-8 rounded-lg shadow-md">
+              <form className="bg-gray-50 p-6 md:p-8 rounded-lg shadow-md">
                 <div className="mb-4">
                   <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
                     Your Name
@@ -713,11 +689,13 @@ export default function Home() {
                     id="message"
                     rows={4}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-                    placeholder="Tell us about your project and what services you're looking for..."
+                    placeholder="Tell us about your project..."
                   ></textarea>
                 </div>
 
-                <Button className="w-full bg-teal-500 hover:bg-teal-600 text-white py-3">Send Message</Button>
+                <Button className="w-full bg-teal-500 hover:bg-teal-600 text-white py-3">
+                  Send Message
+                </Button>
               </form>
             </div>
           </div>
@@ -725,11 +703,10 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-10 text-gray-800 text-center">Frequently Asked Questions</h2>
-          <br />
-          <br />
+          
           <div className="max-w-4xl mx-auto space-y-4">
             {[
               {
@@ -777,7 +754,7 @@ export default function Home() {
                 key={index}
                 className="group border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm"
               >
-                <summary className="flex items-center justify-between cursor-pointer px-6 py-4 text-lg font-semibold text-gray-800 group-open:bg-teal-50 group-open:text-teal-600 transition-colors">
+                <summary className="flex items-center justify-between cursor-pointer px-4 py-3 md:px-6 md:py-4 text-base md:text-lg font-semibold text-gray-800 group-open:bg-teal-50 group-open:text-teal-600 transition-colors">
                   <span>
                     {index + 1}. {item.q}
                   </span>
@@ -790,7 +767,7 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <div className="px-6 pb-4 text-gray-700 whitespace-pre-line">{item.a}</div>
+                <div className="px-4 md:px-6 pb-4 text-gray-700 whitespace-pre-line">{item.a}</div>
               </details>
             ))}
           </div>
@@ -798,53 +775,51 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white pt-16 pb-8">
+      <footer className="bg-gray-900 text-white pt-12 pb-6">
         <div className="container mx-auto px-4">
           {/* Main Footer Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
             {/* Company Info */}
             <div>
               <div className="flex items-center mb-6">
-                <div className="h-12 w-auto">
+                <div className="h-10 w-10 relative">
                   <Image
                     src="/logo.png"
                     alt="The Painting Company Logo"
-                    width={48}
-                    height={48}
+                    fill
                     className="object-contain"
                   />
                 </div>
-                <span className="ml-3 font-semibold text-xl">The Painting Company</span>
+                <span className="ml-3 font-semibold">The Painting Company</span>
               </div>
-              <p className="text-gray-400 mb-6">
+              <p className="text-gray-400 mb-6 text-sm">
                 Premium painting services for residential, commercial, and industrial spaces. Professional, reliable,
                 and passionate about quality.
               </p>
-              <div className="flex space-x-4">
+              <div className="flex space-x-3">
                 <a
                   href="#"
                   className="bg-gray-800 hover:bg-teal-500 text-white p-2 rounded-full transition-colors duration-300"
                 >
-                  <Facebook className="h-5 w-5" />
+                  <Facebook className="h-4 w-4" />
                   <span className="sr-only">Facebook</span>
                 </a>
                 <a
                   href="#"
                   className="bg-gray-800 hover:bg-teal-500 text-white p-2 rounded-full transition-colors duration-300"
                 >
-                  <Instagram className="h-5 w-5" />
+                  <Instagram className="h-4 w-4" />
                   <span className="sr-only">Instagram</span>
                 </a>
                 <a
                   href="#"
                   className="bg-gray-800 hover:bg-teal-500 text-white p-2 rounded-full transition-colors duration-300"
                 >
-                  <Twitter className="h-5 w-5" />
+                  <Twitter className="h-4 w-4" />
                   <span className="sr-only">Twitter</span>
                 </a>
               </div>
             </div>
-
             {/* Quick Links */}
             <div>
               <h3 className="text-lg font-semibold mb-6 relative">
