@@ -1,8 +1,10 @@
-"use client"
+'use client';  // Necessary for React hooks in Next.js
+
 
 import Image from "next/image"
 import Link from "next/link"
 import { Menu } from "lucide-react";
+import { motion, AnimatePresence } from 'framer-motion';
 
 import {
   ChevronDown,
@@ -18,28 +20,29 @@ import {
   ChevronRight,
 } from "lucide-react"
 import { useState, useEffect, useCallback } from "react"
+import { Button } from '@/components/ui/button';
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+
 
 // Testimonial data
 const galleryImages = [
-  "/p5.jpg",
-  "/p6.jpg",
-  "/p7.jpg",
-  "/p8.jpg",
-  "/p9.jpg",
-  "/p10.jpg",
-  "/p11.jpg",
-  "/p12.jpg",
+  "/p5.webp",
+  "/p6.webp",
+  "/p7.webp",
+  "/p8.webp",
+  "/p9.webp",
+  "/p10.webp",
+  "/p11.webp",
+  "/p12.webp",
 ];
+
 
 const testimonials = [
   {
     id: 1,
     name: "Ahmed R.",
     role: "Villa Owner",
-    image: "/p15.jpg",
+    image: "/p15.webp",
     content:
       "Professional from start to finish. They transformed our villa with clean, high-quality work. Highly recommended.",
   },
@@ -47,14 +50,14 @@ const testimonials = [
     id: 2,
     name: "Sarah L.",
     role: "Property Manager",
-    image: "/p16.jpg",
+    image: "/p16.webp",
     content: "On-time delivery and flawless finish. Their team really knows what they're doing.",
   },
   {
     id: 3,
     name: "Lina M.",
     role: "Café Owner",
-    image: "/p16.jpg",
+    image: "/p16.webp",
     content:
       "They understood our vision for the café wall and brought it to life with color and energy. The mural is now the most photographed spot in our shop.",
   },
@@ -62,7 +65,7 @@ const testimonials = [
     id: 4,
     name: "Hassan T.",
     role: "Facilities Manager",
-    image: "/p17.jpg",
+    image: "/p17.webp",
     content:
       "Reliable, fast, and no mess left behind. I've worked with a few painting companies, but these guys stand out for their professionalism.",
   },
@@ -70,7 +73,7 @@ const testimonials = [
     id: 5,
     name: "Nour A.",
     role: "Marketing Director",
-    image: "/p18.jpg",
+    image: "/p18.webp",
     content:
       "They turned a dull office hallway into a vibrant branded space. Our team loves it, and so do our clients!",
   },
@@ -78,7 +81,7 @@ const testimonials = [
     id: 6,
     name: "Samiya K.",
     role: "Homeowner",
-    image: "/p19.jpg",
+    image: "/p19.webp",
     content:
       "The calligraphy they did for our living room wall is absolutely stunning. Subtle, elegant, and meaningful.",
   },
@@ -86,7 +89,7 @@ const testimonials = [
     id: 7,
     name: "Omar F.",
     role: "Real Estate Investor",
-    image: "/p20.jpg",
+    image: "/p20.webp",
     content:
       "From the first consultation to the final coat, the experience was smooth. Great communication and a beautiful result.",
   },
@@ -94,7 +97,7 @@ const testimonials = [
     id: 8,
     name: "Rita B.",
     role: "Store Manager",
-    image: "/p21.jpg",
+    image: "/p21.webp",
     content:
       "We hired them for our annual retail refresh. They were quick, flexible with our timing, and the store looked brand new when they finished.",
   },
@@ -102,7 +105,7 @@ const testimonials = [
     id: 9,
     name: "Ayesha D.",
     role: "Homeowner",
-    image: "/p22.jpg",
+    image: "/p22.webp",
     content:
       "I was worried about repainting with my kids at home, but they were incredibly neat and fast. Great attention to detail too.",
   },
@@ -110,18 +113,35 @@ const testimonials = [
     id: 10,
     name: "Yusuf E.",
     role: "Event Producer",
-    image: "/p23.jpg",
+    image: "/p23.webp",
     content:
       "A fantastic team with real talent — the graffiti wall they painted for our launch event turned into the highlight of the night.",
   },
 ]
 
 export default function Home() {
+  const [selectedImage, setSelectedImage] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
 
+// Ensure selectedImageIndex is initialized correctly with useState
+const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+
+// Function to handle Next Image
+const goToNextImage = () => {
+  if (selectedImageIndex !== null && selectedImageIndex < galleryImages.length - 1) {
+    setSelectedImageIndex(selectedImageIndex + 1);
+  }
+};
+
+// Function to handle Previous Image
+const goToPreviousImage = () => {
+  if (selectedImageIndex !== null && selectedImageIndex > 0) {
+    setSelectedImageIndex(selectedImageIndex - 1);
+  }
+    };
   // Toggle mobile menu
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen)
@@ -182,7 +202,7 @@ export default function Home() {
       <header className="relative h-screen w-full">
         <div className="absolute inset-0">
           <Image
-            src="/p1.jpg"
+            src="/p1.webp"
             alt="Professional painting service"
             fill
             priority
@@ -191,50 +211,46 @@ export default function Home() {
         </div>
 
         {/* Navigation */}
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
-          <div className="container mx-auto px-4 flex items-center justify-between py-4">
-            <div className="flex items-center">
-              <div className="flex items-center p-2">
-                <div className="h-[60px] w-[60px] relative">
-                  <Image
-                    src="/logo.png"
-                    alt="The Painting Company Logo"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </div>
-            </div>
-            
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-8">
-              <Link href="#about" className="text-[#00878C] hover:text-[#006e73] transition-colors">
-                About
-              </Link>
-              <Link href="#services" className="text-[#00878C] hover:text-[#006e73] transition-colors">
-                Services
-              </Link>
-              <Link href="#gallery" className="text-[#00878C] hover:text-[#006e73] transition-colors">
-                Gallery
-              </Link>
-              <Link href="#testimonials" className="text-[#00878C] hover:text-[#006e73] transition-colors">
-                Testimonials
-              </Link>
-              <Link href="#contact" className="text-[#00878C] hover:text-[#006e73] transition-colors">
-                Contact
-              </Link>
-            </div>
-            
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden text-[#00878C] hover:text-white p-2"
-              onClick={toggleMobileMenu}
-              aria-label="Toggle menu"
-            >
-              <Menu className="w-5 h-5" />
-            </button>
-          </div>
-        </nav>
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-lg">
+  <div className="container mx-auto px-4 flex items-center justify-between py-3">
+    {/* Logo */}
+    <div className="flex items-center">
+      <div className="p-2 rounded-lg hover:bg-gray-100 transition-all">
+        <div className="relative w-[150px] h-[80px] sm:w-[180px] sm:h-[90px] md:w-[220px] md:h-[100px]">
+          <Image
+            src="/logo.png"
+            alt="The Painting Company Logo"
+            fill
+            className="object-contain"
+          />
+        </div>
+      </div>
+    </div>
+
+    {/* Desktop Nav */}
+    <div className="hidden md:flex items-center space-x-6">
+      {["about", "services", "gallery", "testimonials", "contact"].map((section) => (
+        <Link
+          key={section}
+          href={`#${section}`}
+          className="text-[#00878C] font-medium hover:text-[#005f63] hover:underline underline-offset-4 transition-all duration-200"
+        >
+          {section.charAt(0).toUpperCase() + section.slice(1)}
+        </Link>
+      ))}
+    </div>
+
+    {/* Mobile Menu Button */}
+    <button
+      className="md:hidden text-[#00878C] p-2 rounded hover:bg-[#00878C] hover:text-white transition-all duration-200"
+      onClick={toggleMobileMenu}
+      aria-label="Toggle menu"
+    >
+      <Menu className="w-6 h-6" />
+    </button>
+  </div>
+</nav>
+
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
@@ -278,24 +294,24 @@ export default function Home() {
         )}
 
         {/* Hero Content */}
-        <div className="relative z-10 flex h-full items-center justify-center px-4">
-          <div className="text-center max-w-4xl px-4">
+        <div className="relative z-10 flex h-full items-center justify-center px-4 ">
+          <div className="text-center max-w-4xl px-4 ">
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight">
               Precision. Protection. Perfection.
             </h1>
             <p className="text-lg md:text-2xl text-white mb-6">
-              Welcome to <span className="text-teal-400 font-semibold">The Painting Company</span> — with over{" "}
+              Welcome to <span className="font-semibold">The Painting Company</span> — with over{" "}
               <strong>20 years</strong> of experience delivering high-quality painting services for residential,
               commercial, and industrial spaces.
             </p>
             <p className="text-white text-base md:text-lg mb-8">
               From stylish interiors to durable exterior finishes, our expert solutions are designed to last. Looking
               for reliable painters who deliver{" "}
-              <span className="text-teal-400">on time, on budget, and beyond expectations?</span> You're in the right
+              <span className="">on time, on budget, and beyond expectations?</span> You're in the right
               place.
             </p>
             <Button className="bg-teal-500 hover:bg-teal-600 text-white px-8 py-4 text-lg rounded-full shadow-lg transition-all duration-300">
-              Request a Free Quote
+              Get a Quote
             </Button>
           </div>
         </div>
@@ -308,7 +324,7 @@ export default function Home() {
             <div className="md:w-1/2 w-full">
               <div className="relative h-80 md:h-96 w-full rounded-lg overflow-hidden shadow-lg">
                 <Image
-                  src="/p2.jpg"
+                  src="/p10.webp"
                   alt="Professional painters at work"
                   fill
                   className="object-cover"
@@ -362,9 +378,7 @@ export default function Home() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4 text-gray-800">Our Services</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              At The Painting Company, we take pride in offering a full suite of painting and wall care solutions
-              tailored to both residential and commercial spaces. Every service is executed with precision, using
-              top-quality materials, advanced techniques, and a team of trained professionals.
+            Expert residential and commercial painting and wall care with quality materials and skilled pros.
             </p>
           </div>
 
@@ -372,7 +386,7 @@ export default function Home() {
             <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02]">
               <div className="h-48 relative">
                 <Image
-                  src="/p3.jpg"
+                  src="/p3.webp"
                   alt="Interior Wall Painting"
                   fill
                   className="object-cover"
@@ -402,7 +416,7 @@ export default function Home() {
             <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02]">
               <div className="h-48 relative">
                 <Image
-                  src="/p4.jpg"
+                  src="/p4.webp"
                   alt="Exterior Wall Painting"
                   fill
                   className="object-cover"
@@ -432,7 +446,7 @@ export default function Home() {
             <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-[1.02]">
               <div className="h-48 relative">
                 <Image
-                  src="/p5.jpg"
+                  src="/p5.webp"
                   alt="Wall Maintenance & Artistry"
                   fill
                   className="object-cover"
@@ -464,35 +478,81 @@ export default function Home() {
 
       {/* Gallery Section */}
       <section id="gallery" className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4 text-gray-800">Our Gallery</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Browse through our portfolio of completed projects and see the quality of our work firsthand.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {galleryImages.map((src, index) => (
-              <div key={index} className="relative aspect-square overflow-hidden rounded-lg group">
-                <Image
-                  src={src}
-                  alt={`Painting project ${index + 1}`}
-                  fill
-                  className="object-cover transition-transform group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <span className="text-white font-medium">View</span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Button className="bg-teal-500 hover:bg-teal-600 text-white">View More Photos</Button>
-          </div>
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4 text-gray-800">Our Gallery</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Browse through our portfolio of completed projects and see the quality of our work firsthand.
+          </p>
         </div>
-      </section>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          {galleryImages.map((src, index) => (
+            <div
+              key={index}
+              className="relative aspect-square overflow-hidden rounded-lg group cursor-pointer transition-transform transform hover:scale-105"
+              onClick={() => setSelectedImageIndex(index)}
+            >
+              <Image
+                src={src}
+                alt={`Project ${index + 1}`}
+                fill
+                className="object-cover transition-all duration-300 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
+                <span className="text-white font-medium">View</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <Button className="bg-teal-500 hover:bg-teal-600 text-white">View More Photos</Button>
+        </div>
+      </div>
+
+      {/* Animated Lightbox */}
+      <AnimatePresence>
+        {selectedImageIndex !== null && (
+          <motion.div
+            className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImageIndex(null)} // Close modal when clicking on the overlay
+          >
+            <motion.div
+              className="relative w-full h-full max-w-4xl max-h-[90vh] px-4"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              onClick={(e) => e.stopPropagation()} // Prevent closing on inner content click
+            >
+              <Image
+                src={galleryImages[selectedImageIndex]}
+                alt="Enlarged view"
+                fill
+                className="object-contain w-full h-full rounded-xl"
+              />
+              <button
+                className="absolute top-4 right-4 text-white bg-white/20 hover:bg-white/40 p-2 rounded-full text-lg font-bold"
+                onClick={() => setSelectedImageIndex(null)} // Close modal on button click
+              >
+                ✕
+              </button>
+
+              {/* Carousel Navigation */}
+              <div className="absolute top-1/2 left-4 transform -translate-y-1/2 cursor-pointer text-white text-3xl" onClick={goToPreviousImage}>
+                &#10094;
+              </div>
+              <div className="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer text-white text-3xl" onClick={goToNextImage}>
+                &#10095;
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
 
       {/* Testimonials Section */}
       <section id="testimonials" className="py-16 bg-teal-50">
@@ -624,7 +684,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="mt-8">
+              {/* <div className="mt-8">
                 <h4 className="font-semibold text-gray-800 mb-4">Business Hours</h4>
                 <div className="grid grid-cols-2 gap-2 text-gray-600">
                   <div>Monday - Friday</div>
@@ -634,7 +694,7 @@ export default function Home() {
                   <div>Sunday</div>
                   <div>Closed</div>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Contact Form */}
@@ -704,75 +764,74 @@ export default function Home() {
 
       {/* FAQ Section */}
       <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-10 text-gray-800 text-center">Frequently Asked Questions</h2>
-          
-          <div className="max-w-4xl mx-auto space-y-4">
-            {[
-              {
-                q: "What types of painting services do you offer?",
-                a: "We offer complete painting solutions, including:\n• Interior wall painting\n• Exterior wall painting\n• Maintenance & repainting services\n• Artistic wall highlights such as murals, calligraphy, doodles, and graffiti-inspired designs",
-              },
-              {
-                q: "Do you provide the paint and materials, or do I need to supply them?",
-                a: "We provide all required paints, tools, and materials. We use high-quality, trusted brands. If you have a preferred paint brand or finish, we're happy to accommodate it.",
-              },
-              {
-                q: "How long does a typical painting project take?",
-                a: "It depends on the size and scope:\n• A single room: 1 day\n• Full apartment/villa: 2–5 days\n• Commercial or exterior projects: Variable based on surface size and prep requirements",
-              },
-              {
-                q: "Do you do surface preparation and repairs?",
-                a: "Yes. All our jobs include full surface prep — sanding, filling cracks or holes, priming, and treating stains or humidity damage before painting begins.",
-              },
-              {
-                q: "Can you repaint areas affected by water damage or renovation?",
-                a: "Absolutely. We specialize in post-repair touch-ups, repainting water-damaged walls, and restoring surfaces after maintenance or construction work.",
-              },
-              {
-                q: "Do you offer maintenance contracts or regular repainting services?",
-                a: "Yes. We offer monthly, quarterly, or annual maintenance packages for residential communities, commercial properties, and shared spaces.",
-              },
-              {
-                q: "Can you help me choose the right colors or finishes?",
-                a: "Of course. We offer color consultation services to help you select tones that match your space, lighting, and design goals. We can also provide sample applications if needed.",
-              },
-              {
-                q: "Do you offer wall art services like murals or graffiti?",
-                a: "Yes. We have an in-house team of artists who create custom murals, graffiti-inspired designs, Arabic or modern calligraphy, doodles, and more.",
-              },
-              {
-                q: "Will the painters clean up after the job?",
-                a: "Always. Clean-up is part of our process. We protect your furniture, flooring, and belongings during painting and leave your space clean and paint-free once we're done.",
-              },
-              {
-                q: "How do I request a quote?",
-                a: "Just click [Request a Free Quote] or reach out via WhatsApp, phone, or our contact form. Share a few details and we'll get back to you with a customized quote.",
-              },
-            ].map((item, index) => (
-              <details
-                key={index}
-                className="group border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm"
-              >
-                <summary className="flex items-center justify-between cursor-pointer px-4 py-3 md:px-6 md:py-4 text-base md:text-lg font-semibold text-gray-800 group-open:bg-teal-50 group-open:text-teal-600 transition-colors">
-                  <span>
-                    {index + 1}. {item.q}
-                  </span>
-                  <svg
-                    className="w-5 h-5 transform transition-transform duration-200 group-open:rotate-180 text-teal-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </summary>
-                <div className="px-4 md:px-6 pb-4 text-gray-700 whitespace-pre-line">{item.a}</div>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
+  <div className="container mx-auto px-4">
+    <h2 className="text-3xl font-bold mb-10 text-gray-800 text-center">Frequently Asked Questions</h2>
+
+    <div className="max-w-4xl mx-auto space-y-4">
+      {[
+        {
+          q: "What types of painting services do you offer?",
+          a: "We offer complete painting solutions, including:\n• Interior wall painting\n• Exterior wall painting\n• Maintenance & repainting services\n• Artistic wall highlights such as murals, calligraphy, doodles, and graffiti-inspired designs",
+        },
+        {
+          q: "Do you provide the paint and materials, or do I need to supply them?",
+          a: "We provide all required paints, tools, and materials. We use high-quality, trusted brands. If you have a preferred paint brand or finish, we're happy to accommodate it.",
+        },
+        {
+          q: "How long does a typical painting project take?",
+          a: "It depends on the size and scope:\n• A single room: 1 day\n• Full apartment/villa: 2–5 days\n• Commercial or exterior projects: Variable based on surface size and prep requirements",
+        },
+        {
+          q: "Do you do surface preparation and repairs?",
+          a: "Yes. All our jobs include full surface prep — sanding, filling cracks or holes, priming, and treating stains or humidity damage before painting begins.",
+        },
+        {
+          q: "Can you repaint areas affected by water damage or renovation?",
+          a: "Absolutely. We specialize in post-repair touch-ups, repainting water-damaged walls, and restoring surfaces after maintenance or construction work.",
+        },
+        {
+          q: "Do you offer maintenance contracts or regular repainting services?",
+          a: "Yes. We offer monthly, quarterly, or annual maintenance packages for residential communities, commercial properties, and shared spaces.",
+        },
+        {
+          q: "Can you help me choose the right colors or finishes?",
+          a: "Of course. We offer color consultation services to help you select tones that match your space, lighting, and design goals. We can also provide sample applications if needed.",
+        },
+        {
+          q: "Do you offer wall art services like murals or graffiti?",
+          a: "Yes. We have an in-house team of artists who create custom murals, graffiti-inspired designs, Arabic or modern calligraphy, doodles, and more.",
+        },
+        {
+          q: "Will the painters clean up after the job?",
+          a: "Always. Clean-up is part of our process. We protect your furniture, flooring, and belongings during painting and leave your space clean and paint-free once we're done.",
+        },
+        {
+          q: "How do I request a quote?",
+          a: "Just click [Request a Free Quote] or reach out via WhatsApp, phone, or our contact form. Share a few details and we'll get back to you with a customized quote.",
+        },
+      ].map((item, index) => (
+        <details
+          key={index}
+          className="group border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm"
+        >
+          <summary className="flex items-center justify-between cursor-pointer px-4 py-3 md:px-6 md:py-4 text-base md:text-lg font-semibold text-gray-800 group-open:bg-teal-50 group-open:text-teal-600 transition-colors">
+            <span>{item.q}</span>
+            <svg
+              className="w-5 h-5 transform transition-transform duration-200 group-open:rotate-180 text-teal-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div className="px-4 md:px-6 pb-4 text-gray-700 whitespace-pre-line">{item.a}</div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white pt-12 pb-6">
@@ -782,15 +841,16 @@ export default function Home() {
             {/* Company Info */}
             <div>
               <div className="flex items-center mb-6">
-                <div className="h-10 w-10 relative">
-                  <Image
-                    src="/logo.png"
-                    alt="The Painting Company Logo"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <span className="ml-3 font-semibold">The Painting Company</span>
+              <div className="h-20 w-20 relative">
+  <Image
+    src="/logo1.png"
+    alt="The Painting Company Logo"
+    fill
+    className="object-contain"
+  />
+</div>
+
+                <span className=" font-semibold">The Painting <br></br> Company</span>
               </div>
               <p className="text-gray-400 mb-6 text-sm">
                 Premium painting services for residential, commercial, and industrial spaces. Professional, reliable,
@@ -892,60 +952,62 @@ export default function Home() {
 
             {/* Newsletter */}
             <div>
-              <h3 className="text-lg font-semibold mb-6 relative">
-                <span className="relative z-10">Newsletter</span>
-                <span className="absolute bottom-0 left-0 w-12 h-1 bg-teal-500"></span>
-              </h3>
-              <p className="text-gray-400 mb-4">
-                Subscribe to our newsletter for painting tips, special offers, and updates.
-              </p>
-              <div className="flex">
-                <Input
-                  type="email"
-                  placeholder="Your email address"
-                  className="bg-gray-800 border-gray-700 text-white focus:ring-teal-500 focus:border-teal-500 rounded-r-none"
-                />
-                <Button className="bg-teal-500 hover:bg-teal-600 rounded-l-none">
-                  <Send className="h-4 w-4" />
-                </Button>
-              </div>
-              <p className="text-xs text-gray-500 mt-2">We respect your privacy. Unsubscribe at any time.</p>
-            </div>
+  <h3 className="text-lg font-semibold mb-6 relative">
+    <span className="relative z-10">Contact Us</span>
+    <span className="absolute bottom-0 left-0 w-12 h-1 bg-teal-500"></span>
+  </h3>
+
+  <div className="space-y-4">
+    <div className="flex items-center">
+      <MapPin className="h-5 w-5 text-teal-500 mr-3" />
+      <span className="text-gray-400">123 Painting Lane, Dubai, UAE</span>
+    </div>
+    <div className="flex items-center">
+      <Phone className="h-5 w-5 text-teal-500 mr-3" />
+      <span className="text-gray-400">+971 50 123 4567</span>
+    </div>
+    <div className="flex items-center">
+  <Mail className="h-5 w-5 text-teal-500 mr-3" />
+  <a href="mailto:info@thepaintingcompany.com" className="text-gray-400">
+    info@thepaintingcompany.com
+  </a>
+</div>
+
+  </div>
+</div>
+
           </div>
 
           {/* Contact Info Bar */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-8 border-t border-b border-gray-800 mb-8">
-            <div className="flex items-center justify-center md:justify-start">
-              <MapPin className="h-5 w-5 text-teal-500 mr-3" />
-              <span className="text-gray-400">123 Painting Lane, Dubai, UAE</span>
-            </div>
-            <div className="flex items-center justify-center">
-              <Phone className="h-5 w-5 text-teal-500 mr-3" />
-              <span className="text-gray-400">+971 50 123 4567</span>
-            </div>
-            <div className="flex items-center justify-center md:justify-end">
-              <Mail className="h-5 w-5 text-teal-500 mr-3" />
-              <span className="text-gray-400">info@thepaintingcompany.com</span>
-            </div>
-          </div>
+         
 
           {/* Copyright and Legal */}
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-500 text-sm mb-4 md:mb-0">
-              &copy; {new Date().getFullYear()} The Painting Company. All rights reserved.
-            </p>
-            <div className="flex space-x-6">
-              <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">
-                Privacy Policy
-              </a>
-              <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">
-                Terms of Service
-              </a>
-              <a href="#" className="text-gray-500 hover:text-teal-400 text-sm transition-colors">
-                Cookie Policy
-              </a>
-            </div>
-          </div>
+          <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
+          <p className="text-slate-500 text-sm">
+            &copy; 2025 {" "}
+          
+            
+            
+            <a
+              href="https://codestudios.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#00878C] hover:text-orange-500 transition-colors"
+            >
+             The Painting Company.
+            </a>
+             All rights reserved. | Powered by{" "}
+            <a
+              href="https://codestudios.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#00878C] hover:text-orange-500 transition-colors"
+            >
+              CodeStudios
+            </a>
+          </p>
+</div>
+
         </div>
 
         {/* Scroll to Top Button */}
@@ -960,5 +1022,6 @@ export default function Home() {
         )}
       </footer>
     </div>
+    
   )
 }
