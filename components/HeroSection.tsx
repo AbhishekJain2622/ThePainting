@@ -127,7 +127,7 @@ function HeroSection() {
               high-quality painting services for residential, commercial, and
               industrial spaces.
             </p> */}
-            <p className="text-white font-normal md:text-normal mb-8">
+{/*             <p className="text-white font-normal md:text-normal mb-8">
               From stylish interiors to durable exterior finishes, our expert
               solutions are designed to last. Looking for reliable painters who
               deliver{" "}
@@ -135,7 +135,7 @@ function HeroSection() {
                 on time, on budget, and beyond expectations?
               </span>{" "}
               You're in the right place.
-            </p>
+            </p> */}
             <Button className="bg-teal-500 hover:bg-teal-600 text-white px-8 mt-16 py-4 text-lg rounded-full shadow-lg transition-all duration-300">
               Get a Quote
             </Button>
